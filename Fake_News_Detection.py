@@ -20,3 +20,17 @@ x_train,x_test,y_train,y_test=train_test_split(df['text'], labels, test_size=0.2
 tfidf_vectorizer=TfidfVectorizer(stop_words='english', max_df=0.7)
 Classifier=[PassiveAggressiveClassifier,DecisionTreeClassifier,RandomForestClassifier,LinearSVC,LogisticRegression]
 Name=['PassiveAggressiveClassifier','DecisionTreeClassifier','RandomForestClassifier','LinearSVC','LogisticRegression']
+# Fit and transform train set, transform test set
+tfidf_train=tfidf_vectorizer.fit_transform(x_train) 
+tfidf_test=tfidf_vectorizer.transform(x_test)
+for i in range(0,5):
+    if(i==0):
+        p=Classifier[i](max_iter=50);
+    else:
+        p=Classifier[i]();
+    p.fit(tfidf_train,y_train)
+#DataFlair - Predict on the test set and calculate accuracy
+    y_pred=p.predict(tfidf_test)
+    score=accuracy_score(y_test,y_pred)
+    print('Accuracy with '+Name[i]+'Algorithm is:'+str(round(score*100,2)))
+
